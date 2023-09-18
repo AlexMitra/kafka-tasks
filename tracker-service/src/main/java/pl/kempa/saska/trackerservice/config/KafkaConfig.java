@@ -1,17 +1,26 @@
 package pl.kempa.saska.trackerservice.config;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import pl.kempa.saska.trackerservice.dto.VehicleDTO;
 
@@ -23,6 +32,15 @@ public class KafkaConfig {
 
 	@Value(value = "${spring.kafka.consumer.group-id}")
 	private String groupId;
+
+	@Value("${app.coordinates-logging-topic.name}")
+	private String loggingTopic;
+
+	@Value("${app.coordinates-logging-topic.partition}")
+	private int partitionNumber;
+
+	@Value("${app.coordinates-logging-topic.replication}")
+	private short replicationFactor;
 
 	@Bean
 	public ConsumerFactory<String, VehicleDTO> consumerFactory() {
@@ -44,5 +62,35 @@ public class KafkaConfig {
 		factory.getContainerProperties()
 				.setAckMode(ContainerProperties.AckMode.RECORD);
 		return factory;
+	}
+
+	@Bean
+	public ProducerFactory<String, VehicleDTO> producerFactory() {
+		Map<String, Object> configProps = new HashMap<>();
+		configProps.put(
+				ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+				bootstrapAddress);
+		configProps.put(
+				ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+				StringSerializer.class);
+		configProps.put(
+				ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+				JsonSerializer.class);
+		return new DefaultKafkaProducerFactory<>(configProps);
+	}
+
+	@Bean
+	public KafkaTemplate<String, VehicleDTO> greetingKafkaTemplate() {
+		return new KafkaTemplate<>(producerFactory());
+	}
+
+
+	@Bean
+	public NewTopic loggingTopic() {
+		return TopicBuilder.name(loggingTopic)
+				.partitions(partitionNumber)
+				.replicas(replicationFactor)
+				.compact()
+				.build();
 	}
 }
