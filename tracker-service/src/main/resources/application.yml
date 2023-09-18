@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: tracker-service
+  kafka:
+    bootstrap-servers: localhost:8097
+    consumer:
+      auto-offset-reset: earliest
+      group-id: vehicle-coordinates-group-1
+      enable-auto-commit: true
+
+app:
+  vehicle-coordinates-topic:
+    name: vehicle-coordinates-topic
+    partition: 3
+    replication: 2

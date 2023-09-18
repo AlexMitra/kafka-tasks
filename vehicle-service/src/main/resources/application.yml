@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: vehicle-service
+  kafka:
+    bootstrap-servers: localhost:8097
+    producer:
+      retries: 3
+      acks: all
+#    consumer:
+#      auto-offset-reset: earliest
+#      group-id: task-1-group-1
+#      # at-most-once consumer
+#      enable-auto-commit: true
+#      auto-commit-interval: 100
+app:
+  vehicle-coordinates-topic:
+    name: vehicle-coordinates-topic
+    partition: 3
+    replication: 2
+

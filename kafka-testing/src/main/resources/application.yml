@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: kafka-testing
+  kafka:
+    producer:
+      # at-least-once producer
+      retries: 0
+      acks: all
+    consumer:
+      auto-offset-reset: earliest
+      group-id: task-1-group-1
+      # at-most-once consumer
+      enable-auto-commit: true
+      auto-commit-interval: 100
+test:
+  topic-1:
+    name: embedded-test-topic
+    partition: 3
+    replication: 2
