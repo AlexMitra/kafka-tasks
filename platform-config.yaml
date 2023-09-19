@@ -1,0 +1,14 @@
+organization:
+  name: My Company
+
+admin:
+  email: test@company.io
+  password: 1122
+
+database:
+  host: 'postgresql'
+  port: 5432
+  name: 'conduktor'
+  username: 'user'
+  password: 'password'
+  connection_timeout: 30 # in seconds

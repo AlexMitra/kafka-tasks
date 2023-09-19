@@ -34,7 +34,8 @@ public class KafkaConfig {
 				ConsumerConfig.GROUP_ID_CONFIG,
 				groupId,
 				ConsumerConfig.ISOLATION_LEVEL_CONFIG,
-				IsolationLevel.READ_COMMITTED.toString().toLowerCase(Locale.ROOT));
+				IsolationLevel.READ_COMMITTED.toString().toLowerCase(Locale.ROOT)
+		);
 		return new DefaultKafkaConsumerFactory(props, new StringDeserializer(),
 				new JsonDeserializer(DistanceDTO.class, false));
 	}
