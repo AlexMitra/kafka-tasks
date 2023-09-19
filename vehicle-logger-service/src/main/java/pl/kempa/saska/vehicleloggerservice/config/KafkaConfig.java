@@ -13,7 +13,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
-import pl.kempa.saska.vehicleloggerservice.dto.VehicleDTO;
+import pl.kempa.saska.vehicleloggerservice.dto.DistanceDTO;
 
 @Configuration
 public class KafkaConfig {
@@ -25,19 +25,19 @@ public class KafkaConfig {
 	private String groupId;
 
 	@Bean
-	public ConsumerFactory<String, VehicleDTO> consumerFactory() {
+	public ConsumerFactory<String, DistanceDTO> consumerFactory() {
 		var props = Map.of(
 				ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
 				bootstrapAddress,
 				ConsumerConfig.GROUP_ID_CONFIG,
 				groupId);
 		return new DefaultKafkaConsumerFactory(props, new StringDeserializer(),
-				new JsonDeserializer(VehicleDTO.class, false));
+				new JsonDeserializer(DistanceDTO.class, false));
 	}
 
 	@Bean
-	public ConcurrentKafkaListenerContainerFactory<String, VehicleDTO> kafkaListenerContainerFactory() {
-		ConcurrentKafkaListenerContainerFactory<String, VehicleDTO> factory =
+	public ConcurrentKafkaListenerContainerFactory<String, DistanceDTO> kafkaListenerContainerFactory() {
+		ConcurrentKafkaListenerContainerFactory<String, DistanceDTO> factory =
 				new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory());
 		factory.getContainerProperties()

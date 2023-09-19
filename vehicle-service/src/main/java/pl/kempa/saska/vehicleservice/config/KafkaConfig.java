@@ -44,6 +44,7 @@ public class KafkaConfig {
 		configProps.put(
 				ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
 				JsonSerializer.class);
+		configProps.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, VehiclePartitioner.class);
 		return new DefaultKafkaProducerFactory<>(configProps);
 	}
 

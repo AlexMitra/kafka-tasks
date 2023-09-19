@@ -22,6 +22,7 @@ import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import pl.kempa.saska.trackerservice.dto.DistanceDTO;
 import pl.kempa.saska.trackerservice.dto.VehicleDTO;
 
 @Configuration
@@ -65,7 +66,7 @@ public class KafkaConfig {
 	}
 
 	@Bean
-	public ProducerFactory<String, VehicleDTO> producerFactory() {
+	public ProducerFactory<String, DistanceDTO> producerFactory() {
 		Map<String, Object> configProps = new HashMap<>();
 		configProps.put(
 				ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -80,7 +81,7 @@ public class KafkaConfig {
 	}
 
 	@Bean
-	public KafkaTemplate<String, VehicleDTO> greetingKafkaTemplate() {
+	public KafkaTemplate<String, DistanceDTO> greetingKafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
 	}
 

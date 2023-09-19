@@ -1,6 +1,5 @@
 package pl.kempa.saska.vehicleservice.service.impl;
 
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.kafka.core.KafkaTemplate;
@@ -22,7 +21,7 @@ public class VehicleCoordinatesService implements KafkaService<VehicleDTO> {
 	@Override
 	public void sendMessage(String topic, VehicleDTO vehicleDTO) {
 		CompletableFuture<SendResult<String, VehicleDTO>> future =
-				kafkaTemplate.send(topic, UUID.randomUUID().toString(), vehicleDTO);
+				kafkaTemplate.send(topic, vehicleDTO.id().toString(), vehicleDTO);
 		future.whenComplete((result, ex) -> {
 			if (ex == null) {
 				log.info("[VEHICLE SERVICE] Sent vehicle coordinates {} to partition {} with offset {}",

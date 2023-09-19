@@ -1,0 +1,89 @@
+### WARSAW 1
+POST localhost:8081/api/vehicles-coordinates
+Content-Type: application/json
+
+{
+	"id": 1,
+	"latitude": 52.244290,
+	"longitude": 21.084796
+}
+
+### GDANSK 1
+POST localhost:8081/api/vehicles-coordinates
+Content-Type: application/json
+
+{
+	"id": 10001,
+	"latitude": 54.317579,
+	"longitude": 18.629504
+}
+
+### KATOWICE 1
+POST localhost:8081/api/vehicles-coordinates
+Content-Type: application/json
+
+{
+	"id": 20001,
+	"latitude": 50.276796,
+	"longitude": 18.957622
+}
+
+### WARSAW 2
+POST localhost:8081/api/vehicles-coordinates
+Content-Type: application/json
+
+{
+	"id": 1,
+	"latitude": 52.235239,
+	"longitude": 21.037970
+}
+
+### GDANSK 2
+POST localhost:8081/api/vehicles-coordinates
+Content-Type: application/json
+
+{
+	"id": 10001,
+	"latitude": 54.354992,
+	"longitude": 18.645468
+}
+
+### KATOWICE 2
+POST localhost:8081/api/vehicles-coordinates
+Content-Type: application/json
+
+{
+	"id": 20001,
+	"latitude": 50.266197,
+	"longitude": 19.016217
+}
+
+### WARSAW 3
+POST localhost:8081/api/vehicles-coordinates
+Content-Type: application/json
+
+{
+	"id": 1,
+	"latitude": 52.216709,
+	"longitude": 20.962481
+}
+
+### GDANSK 3
+POST localhost:8081/api/vehicles-coordinates
+Content-Type: application/json
+
+{
+	"id": 10001,
+	"latitude": 54.399115,
+	"longitude": 18.668945
+}
+
+### KATOWICE 3
+POST localhost:8081/api/vehicles-coordinates
+Content-Type: application/json
+
+{
+	"id": 20001,
+	"latitude": 50.295935,
+	"longitude": 19.117945
+}
