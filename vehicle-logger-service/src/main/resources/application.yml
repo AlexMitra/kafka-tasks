@@ -9,7 +9,6 @@ spring:
     consumer:
       auto-offset-reset: earliest
       group-id: coordinates-logging-group-1
-      enable-auto-commit: true
 
 app:
   coordinates-logging-topic:

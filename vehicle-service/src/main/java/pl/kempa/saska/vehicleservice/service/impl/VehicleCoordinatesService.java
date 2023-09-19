@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ public class VehicleCoordinatesService implements KafkaService<VehicleDTO> {
 	private KafkaTemplate<String, VehicleDTO> kafkaTemplate;
 
 	@Override
+	@Transactional
 	public void sendMessage(String topic, VehicleDTO vehicleDTO) {
 		CompletableFuture<SendResult<String, VehicleDTO>> future =
 				kafkaTemplate.send(topic, vehicleDTO.id().toString(), vehicleDTO);

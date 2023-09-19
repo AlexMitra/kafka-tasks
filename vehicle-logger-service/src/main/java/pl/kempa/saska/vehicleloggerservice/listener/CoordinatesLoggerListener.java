@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import pl.kempa.saska.vehicleloggerservice.dto.DistanceDTO;
@@ -16,6 +17,7 @@ public class CoordinatesLoggerListener {
 
 	@KafkaListener(topics = {"${app.coordinates-logging-topic.name}"},
 			groupId = "${spring.kafka.consumer.group-id}")
+	@Transactional
 	public void onConsume(DistanceDTO distanceDTO) {
 		log.info("[LOGGER] vehicle {} pased  distance {} km", distanceDTO.id(),
 				df.format(distanceDTO.distance()));

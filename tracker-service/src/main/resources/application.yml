@@ -12,7 +12,6 @@ spring:
     consumer:
       auto-offset-reset: earliest
       group-id: vehicle-coordinates-group-1
-      enable-auto-commit: true
 
 app:
   vehicle-coordinates-topic:

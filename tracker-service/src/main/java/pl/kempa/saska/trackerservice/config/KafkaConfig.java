@@ -1,11 +1,13 @@
 package pl.kempa.saska.trackerservice.config;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.IsolationLevel;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,11 +23,14 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.kafka.transaction.KafkaTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import pl.kempa.saska.trackerservice.dto.DistanceDTO;
 import pl.kempa.saska.trackerservice.dto.VehicleDTO;
 
 @Configuration
+@EnableTransactionManagement
 public class KafkaConfig {
 
 	@Value(value = "${spring.kafka.bootstrap-servers}")
@@ -49,7 +54,9 @@ public class KafkaConfig {
 				ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
 				bootstrapAddress,
 				ConsumerConfig.GROUP_ID_CONFIG,
-				groupId);
+				groupId,
+				ConsumerConfig.ISOLATION_LEVEL_CONFIG,
+				IsolationLevel.READ_COMMITTED.toString().toLowerCase(Locale.ROOT));
 		return new DefaultKafkaConsumerFactory(props, new StringDeserializer(),
 				new JsonDeserializer(VehicleDTO.class, false));
 	}
@@ -77,12 +84,18 @@ public class KafkaConfig {
 		configProps.put(
 				ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
 				JsonSerializer.class);
+		configProps.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "logging-tx");
 		return new DefaultKafkaProducerFactory<>(configProps);
 	}
 
 	@Bean
-	public KafkaTemplate<String, DistanceDTO> greetingKafkaTemplate() {
+	public KafkaTemplate<String, DistanceDTO> kafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
+	}
+
+	@Bean
+	public KafkaTransactionManager kafkaTransactionManager(final ProducerFactory producerFactoryTransactional) {
+		return new KafkaTransactionManager<>(producerFactoryTransactional);
 	}
 
 

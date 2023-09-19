@@ -14,10 +14,13 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.kafka.transaction.KafkaTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import pl.kempa.saska.vehicleservice.dto.VehicleDTO;
 
 @Configuration
+@EnableTransactionManagement
 public class KafkaConfig {
 
 	@Value("${app.vehicle-coordinates-topic.name}")
@@ -45,14 +48,19 @@ public class KafkaConfig {
 				ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
 				JsonSerializer.class);
 		configProps.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, VehiclePartitioner.class);
+		configProps.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "vehicle-tx");
 		return new DefaultKafkaProducerFactory<>(configProps);
 	}
 
 	@Bean
-	public KafkaTemplate<String, VehicleDTO> greetingKafkaTemplate() {
+	public KafkaTemplate<String, VehicleDTO> kafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
 	}
 
+	@Bean
+	public KafkaTransactionManager kafkaTransactionManager(final ProducerFactory producerFactoryTransactional) {
+		return new KafkaTransactionManager<>(producerFactoryTransactional);
+	}
 
 	@Bean
 	public NewTopic topic() {

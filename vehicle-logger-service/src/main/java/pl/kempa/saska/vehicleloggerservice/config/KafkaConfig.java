@@ -1,8 +1,10 @@
 package pl.kempa.saska.vehicleloggerservice.config;
 
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.IsolationLevel;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +32,9 @@ public class KafkaConfig {
 				ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
 				bootstrapAddress,
 				ConsumerConfig.GROUP_ID_CONFIG,
-				groupId);
+				groupId,
+				ConsumerConfig.ISOLATION_LEVEL_CONFIG,
+				IsolationLevel.READ_COMMITTED.toString().toLowerCase(Locale.ROOT));
 		return new DefaultKafkaConsumerFactory(props, new StringDeserializer(),
 				new JsonDeserializer(DistanceDTO.class, false));
 	}
